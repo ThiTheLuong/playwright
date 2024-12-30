@@ -1,7 +1,13 @@
 const readline = require('readline-sync');
 // input from user
 let height = Number(readline.question('What is your height(m):'));
+
 let weight = Number(readline.question('What is your weight(kg):'));
+// check if the user input number or not?
+if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+    console.log("Height and Weight must be a number ");
+    return;
+}
 // caculate BIM
 let BMI = weight / (height ** 2);
 //
