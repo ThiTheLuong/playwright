@@ -104,7 +104,7 @@ function updateBalance(bankAccounts) {
 
 
     if (!found) {
-        console.log(`The bank account with account number '${accountNumber}' is not found, so cannot withdraw the money.`);
+        console.log(`The bank account with account number '${bankAccounts.accountNumber}' is not found, so cannot withdraw the money.`);
     }
 }
 function Exit() {
