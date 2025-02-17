@@ -48,7 +48,7 @@ function getUserSelect() {
             console.log(`Input again`);
             break;
     }
-    // }
+   
 
     function getAllPostContent(userId) {
         fetch(`${url}/posts?userId=${userId}`)
