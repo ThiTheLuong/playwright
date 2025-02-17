@@ -1,83 +1,61 @@
-/**
- * ****************************
- * General info:
-    url: https://jsonplaceholder.typicode.com
-    Library: fetch
-    slugs:
-    GET	/posts
-    9.1
-        Please using PROMISE and then able to solve this
-        a. Allow user to input an userid and postId, print out that post content: 
-        Demostrate the following steps:
-            ====MENU===
-            1. Get POST content 
-            2. Print all related posts
-            0. Exit!
-            =========== 
-        b. Print all posts for that user
- * ****************************
- */
-const readline = require('readline-sync');
-const { getUserInput } = require('../../lessons/util/ConsoleController.js')
-const url = 'https://jsonplaceholder.typicode.com';
-userInterface();
-function userInterface() {
-    console.log(`====MENU===`);
-    console.log(`1. Get POST content info then Print the related post`);
-    console.log(`2. Print all related posts`);
-    console.log(`0. Exit!`);
-    getUserSelect();
-}
-function getUserSelect() {
-    let isValidOption = true;
-    const option = getUserInput();
-    switch (option) {
-        case 0:
-            isValidOption = false;
-            break;
-        case 1:
-            const userID = parseInt(readline.question(`Please enter your user ID: ... \t`));
-            const postID = parseInt(readline.question(`Please enter the post ID ... \t`));
-            getPostContent(userID, postID);
-            break;
-        case 2:
-            const userId = parseInt(readline.question(`Please enter your user ID: ... \t`));
-            getAllPostContent(userId);
-            break;
-        default:
-            console.log(`Input again`);
-            break;
-    }
-   
+const readlineSync = require('readline-sync');
+const API_URL = 'https://jsonplaceholder.typicode.com';
 
-    function getAllPostContent(userId) {
-        fetch(`${url}/posts?userId=${userId}`)
-            .then(getResponse)
-            .then(printJSONResponse)
-            .catch(showError);
-    }
-}
-function getPostContent(userId, postId) {
-    fetch(`${url}/posts?userId=${userId}&id=${postId}`)
-        .then(getResponse)
-        .then(printJSONResponse)
-        .catch(showError);
+function startMenu() {
+    console.log(`\n==== MENU ====`);
+    console.log(`1. Retrieve and display a specific post`);
+    console.log(`2. Fetch and display all posts by a user`);
+    console.log(`0. Exit`);
+    handleUserSelection();
 }
 
-
-function getResponse(rawResponse) {
-
-    return rawResponse.json();
+function handleUserSelection() {
+    let option;
+    do {
+        option = parseInt(readlineSync.question("Choose an option: "));
+        switch (option) {
+            case 1:
+                const userId = parseInt(readlineSync.question("Enter User ID: "));
+                const postId = parseInt(readlineSync.question("Enter Post ID: "));
+                fetchSinglePost(userId, postId);
+                break;
+            case 2:
+                const uid = parseInt(readlineSync.question("Enter User ID: "));
+                fetchAllPosts(uid);
+                break;
+            case 0:
+                console.log("Exiting...");
+                return;
+            default:
+                console.log("Invalid choice, please try again.");
+        }
+    } while (option !== 0);
 }
-function showError(error) {
-    console.log(`API has problem with ${error}`);
-}
-function printJSONResponse(rawResponseJSON) {
-    if (rawResponseJSON.length === 0) {
-        console.log(`No data found or invalid input`);
 
-        return;
-    }
-    console.log(rawResponseJSON);
-
+function fetchSinglePost(userId, postId) {
+    fetch(`${API_URL}/posts/${postId}`)
+        .then(response => response.json())
+        .then(post => {
+            if (post.userId !== userId) {
+                console.log("No matching post found.");
+            } else {
+                console.log(post);
+            }
+        })
+        .catch(error => console.error("Error fetching data:", error));
 }
+
+function fetchAllPosts(userId) {
+    fetch(`${API_URL}/posts?userId=${userId}`)
+        .then(response => response.json())
+        .then(posts => {
+            if (posts.length === 0) {
+                console.log("No posts found for this user.");
+            } else {
+                console.log(posts);
+            }
+        })
+        .catch(error => console.error("Error fetching data:", error));
+}
+
+startMenu();
