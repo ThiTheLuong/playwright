@@ -17,4 +17,67 @@
         b. Print all posts for that user
  * ****************************
  */
-   
+const readline = require('readline-sync');
+const { getUserInput } = require('../../lessons/util/ConsoleController.js')
+const url = 'https://jsonplaceholder.typicode.com';
+main();
+function main() {
+    console.log(`====MENU===`);
+    console.log(`1. Get POST content info then Print the related post`);
+    console.log(`2. Print all related posts`);
+    console.log(`0. Exit!`);
+    getUserSelect();
+}
+function getUserSelect() {
+    let isValidOption = true;
+    const option = getUserInput();
+    switch (option) {
+        case 0:
+            isValidOption = false;
+            break;
+        case 1:
+            const userID = parseInt(readline.question(`Please enter your user ID: ... \t`));
+            const postID = parseInt(readline.question(`Please enter the post ID ... \t`));
+            getPostContent(userID, postID);
+            break;
+        case 2:
+            const userId = parseInt(readline.question(`Please enter your user ID: ... \t`));
+            getAllPostContent(userId);
+            break;
+        default:
+            console.log(`Input again`);
+            break;
+    }
+    // }
+
+    function getAllPostContent(userId) {
+        fetch(`${url}/posts?userId=${userId}`)
+            .then(getResponse)
+            .then(printJSONResponse)
+            .catch(showError);
+    }
+}
+function getPostContent(userId, postId) {
+    fetch(`${url}/posts?userId=${userId}&id=${postId}`)
+        .then(getResponse)
+        .then(printJSONResponse)
+        .catch(showError);
+}
+
+
+function getResponse(rawResponse) {
+
+    return rawResponse.json();
+}
+function showError(error) {
+    console.log(`API has problem with ${error}`);
+}
+function printJSONResponse(rawResponseJSON) {
+    if (rawResponseJSON.length === 0) {
+        console.log(`No data found or invalid input`);
+
+        return;
+    }
+    console.log(rawResponseJSON);
+
+}
