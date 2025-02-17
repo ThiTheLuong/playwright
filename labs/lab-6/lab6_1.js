@@ -20,8 +20,8 @@
 const readline = require('readline-sync');
 const { getUserInput } = require('../../lessons/util/ConsoleController.js')
 const url = 'https://jsonplaceholder.typicode.com';
-main();
-function main() {
+userInterface();
+function userInterface() {
     console.log(`====MENU===`);
     console.log(`1. Get POST content info then Print the related post`);
     console.log(`2. Print all related posts`);
