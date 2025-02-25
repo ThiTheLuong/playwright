@@ -1,16 +1,16 @@
 // import Post class    
-const Post = require('./Post'); 
+const Post = require('./Post');
 
 class RequestHandler {
-   
+
     async _getAllPosts(POST_ENDPOINT) {
         try {
             const response = await fetch(POST_ENDPOINT);
             const allPosts = await response.json();
-           
+
 
             return allPosts
-                
+
                 .map(post => new Post(post.userId, post.id, post.title, post.body));
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -20,7 +20,7 @@ class RequestHandler {
 
 
     async printTargetPost(POST_ENDPOINT, userId, postId) {
-        
+
         const allPosts = await this._getAllPosts(POST_ENDPOINT);
         const userPosts = allPosts.filter(post => post.userId === userId);
         const targetPost = userPosts.find(post => post.postId === postId);
@@ -33,7 +33,6 @@ class RequestHandler {
         }
     }
 
-    // this method for handle the POST after construction
     async printAllPosts(POST_ENDPOINT, userId) {
         const allPosts = await this._getAllPosts(POST_ENDPOINT);
         const userPosts = allPosts.filter(post => post.userId === userId);
@@ -50,5 +49,4 @@ class RequestHandler {
 
 
 }
-
 module.exports = RequestHandler;
