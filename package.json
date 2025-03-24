@@ -1,9 +1,10 @@
 {
-  
-"dependencies": {
-  
-  
-"readline-sync": "^1.4.10"
-  
-}
+   
+    "dependencies": {
+        "playwright": "^1.51.1",
+        "readline-sync": "^1.4.10"
+    },
+    "devDependencies": {
+        "ts-node": "^10.9.2"
+    }
 }
